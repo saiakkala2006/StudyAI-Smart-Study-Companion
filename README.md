@@ -132,19 +132,19 @@ GROQ_API_KEY=YOUR_GROQ_API_KEY
 
 ### Home Page
 
-(Add Screenshot)
+![Home](screenshots/home.png)
 
-### Summary Generation
+---
 
-(Add Screenshot)
+### AI Summary
+
+![Summary](screenshots/summary.png)
+
+---
 
 ### Flashcards
 
-(Add Screenshot)
-
-### Study Schedule
-
-(Add Screenshot)
+![Flashcards](screenshots/flashcards.png)
 
 ---
 
