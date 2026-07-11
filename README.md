@@ -4,7 +4,7 @@ StudyAI is an AI-powered web application that helps students study smarter by ge
 
 ## 🚀 Live Demo
 
-🌐 Frontend: https://YOUR-VERCEL-URL.vercel.app
+🌐 Frontend: https://study-ai-smart-study-companion.vercel.app/
 
 ⚙️ Backend: https://studyai-smart-study-companion-backend.onrender.com
 
