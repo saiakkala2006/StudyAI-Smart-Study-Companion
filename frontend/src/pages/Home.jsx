@@ -6,18 +6,20 @@ import TextInput from "../components/TextInput";
 import SummaryCard from "../components/SummaryCard";
 import FlashcardsList from "../components/FlashcardsList";
 import ScheduleCard from "../components/ScheduleCard";
+import QuizList from "../components/QuizList";
 import Button from "../components/Button";
 import Footer from "../components/Footer";
 import UploadCard from "../components/UploadCard";
-import toast from "react-hot-toast";
 import Loader from "../components/Loader";
 
+import toast from "react-hot-toast";
 
 import {
   uploadMaterial,
   generateSummary,
   generateFlashcards,
   generateSchedule,
+  generateQuiz,
 } from "../services/api";
 
 function Home() {
@@ -25,6 +27,7 @@ function Home() {
   const [summary, setSummary] = useState("");
   const [flashcards, setFlashcards] = useState([]);
   const [schedule, setSchedule] = useState("");
+  const [quiz, setQuiz] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filename, setFilename] = useState("");
 
@@ -50,7 +53,7 @@ function Home() {
   // Generate Summary
   const handleGenerateSummary = async () => {
     if (!text.trim()) {
-      alert("Please enter some study material.");
+      toast.error("Please enter some study material.");
       return;
     }
 
@@ -95,7 +98,7 @@ function Home() {
 
     } catch (error) {
       console.error(error);
-      alert("Failed to generate flashcards.");
+      toast.error("Failed to generate flashcards.");
     } finally {
       setLoading(false);
     }
@@ -104,7 +107,7 @@ function Home() {
   // Generate Schedule
   const handleGenerateSchedule = async () => {
     if (!text.trim()) {
-      alert("Please enter some study material.");
+      toast.error("Please enter some study material.");
       return;
     }
 
@@ -122,7 +125,34 @@ function Home() {
 
     } catch (error) {
       console.error(error);
-      alert("Failed to generate schedule.");
+      toast.error("Failed to generate schedule.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Generate Quiz
+  const handleGenerateQuiz = async () => {
+    if (!text.trim()) {
+      toast.error("Please enter some study material.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await generateQuiz(text);
+
+      setQuiz(response.data.quiz);
+
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate quiz.");
     } finally {
       setLoading(false);
     }
@@ -138,14 +168,11 @@ function Home() {
 
       <div className="max-w-6xl mx-auto px-6 py-10">
 
-        {/* Feature Cards */}
-
-        {/* Upload Card */}
-
-<UploadCard
-  handleFileUpload={handleFileUpload}
-  filename={filename}
-/>
+        {/* Upload */}
+        <UploadCard
+          handleFileUpload={handleFileUpload}
+          filename={filename}
+        />
 
         {/* Text Area */}
         <div className="bg-slate-800 border border-slate-700 rounded-2xl shadow-xl p-8 mb-8">
@@ -182,6 +209,12 @@ function Home() {
             onClick={handleGenerateSchedule}
           />
 
+          <Button
+            title="🧠 Generate Quiz"
+            loading={loading}
+            onClick={handleGenerateQuiz}
+          />
+
         </div>
 
         {/* Results */}
@@ -196,6 +229,10 @@ function Home() {
 
         {schedule && (
           <ScheduleCard schedule={schedule} />
+        )}
+
+        {quiz.length > 0 && (
+          <QuizList quiz={quiz} />
         )}
 
       </div>

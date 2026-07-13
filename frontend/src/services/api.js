@@ -4,27 +4,38 @@ const api = axios.create({
   baseURL: "https://studyai-smart-study-companion-backend.onrender.com/api",
 });
 
-export const uploadMaterial = async (file) => {
+// Upload PDF/DOCX
+export const uploadMaterial = (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
   return api.post("/upload-material", formData);
 };
 
-export const generateSummary = async (text) => {
+// Summary
+export const generateSummary = (text) => {
   return api.post("/generate-summary", {
     text,
   });
 };
 
-export const generateFlashcards = async (text) => {
+// Flashcards
+export const generateFlashcards = (text) => {
   return api.post("/generate-flashcards", {
     text,
   });
 };
 
+// Study Schedule
 export const generateSchedule = (text) => {
-  return axios.post("http://127.0.0.1:5000/api/generate-schedule", {
+  return api.post("/generate-schedule", {
+    text,
+  });
+};
+
+// Quiz
+export const generateQuiz = (text) => {
+  return api.post("/generate-quiz", {
     text,
   });
 };

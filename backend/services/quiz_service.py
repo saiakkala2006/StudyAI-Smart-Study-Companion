@@ -8,18 +8,29 @@ client = Groq(api_key=Config.GROQ_API_KEY)
 def generate_quiz(text):
 
     prompt = f"""
-Generate ONLY 3 multiple choice questions.
+You are an AI Study Assistant.
 
-Return ONLY JSON.
+Generate exactly 10 multiple choice questions from the study material.
+
+Rules:
+- Each question must have 4 options.
+- Only one option should be correct.
+- Keep questions simple and relevant.
+- Return ONLY valid JSON.
 
 Example:
 
 [
- {{
-   "question":"...",
-   "options":["A","B","C","D"],
-   "answer":"A"
- }}
+  {{
+    "question": "What is Machine Learning?",
+    "options": [
+      "A subset of Artificial Intelligence",
+      "A programming language",
+      "A database",
+      "A web browser"
+    ],
+    "answer": "A subset of Artificial Intelligence"
+  }}
 ]
 
 Study Material:
@@ -35,12 +46,14 @@ Study Material:
                 "content": prompt
             }
         ],
-        temperature=0.2
+        temperature=0.3
     )
 
     content = response.choices[0].message.content.strip()
 
-    # Remove markdown if present
-    content = content.replace("```json", "").replace("```", "").strip()
+    # Remove markdown if Groq returns it
+    content = content.replace("```json", "")
+    content = content.replace("```", "")
+    content = content.strip()
 
     return json.loads(content)
